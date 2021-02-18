@@ -5,30 +5,48 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.yanghui.irecorder.core.Record;
 import com.yanghui.tools.LayoutTool;
 
-public class ListItemView extends View {
+public class ListItemView extends androidx.appcompat.widget.AppCompatButton {
 
-    private final int OUTER_WIDTH_SIZE;// 内部大小
-    private final int OUTER_HEIGHT_SIZE;// 外部大小
+    public String name = "";
+    public String bvID = "";
     private final Context context;
-    private final Paint numPaint;
-    private final Paint namePaint;
-    private final Paint appendPaint;
+    public String time = "";
+    private int OUTER_WIDTH_SIZE;// 内部大小
+    private int OUTER_HEIGHT_SIZE;// 外部大小
     public int num;
-    public String name;
-    public String bvID;
-    public String time;
+    private Paint numPaint;
+    private Paint namePaint;
+    private Paint appendPaint;
     private int realWidth;// 绘图使用的宽
     private int realHeight;// 绘图使用的高
+//    private OnClickListener mCallback = null;
+
+    public ListItemView(Context context, Record record) {
+        super(context);
+        this.context = context;
+        record.setListItemView(this);
+        init();
+    }
+
+    public ListItemView(Context context) {
+        super(context);
+        this.context = context;
+    }
 
     public ListItemView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
+        init();
+    }
+
+    public void init() {
+        setBackgroundColor(0xFFFFFFFF);
         OUTER_WIDTH_SIZE = LayoutTool.dip2px(context, 420.0f);
         OUTER_HEIGHT_SIZE = LayoutTool.dip2px(context, 60.0f);
 
@@ -133,6 +151,16 @@ public class ListItemView extends View {
         );
     }
 
+//    @SuppressLint("ClickableViewAccessibility")
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        if (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
+//            if (mCallback != null)
+//                mCallback.onClick(this);
+//        }
+//        return true;
+//    }
+
     public void setName(String name) {
         this.name = name;
         invalidate();
@@ -160,5 +188,20 @@ public class ListItemView extends View {
             setTime(params[2]);
             setNum(num);
         }
+    }
+
+    public void setView(Record record) {
+        name = record.name;
+        bvID = record.bvid;
+        if (name == null)
+            name = "";
+        time = Integer.toString(record.current[0]);
+        invalidate();
+    }
+
+    public void setDefault() {
+        name = "获取错误";
+        bvID = "";
+        time = "";
     }
 }
