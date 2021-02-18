@@ -1,6 +1,4 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.YangHui.BrandBoard" parent="Theme.Design.Light.NoActionBar">
-        <item name="android:windowFullscreen">true</item>
-    </style>
+    <style name="Theme.YangHui.BrandBoard" parent="Theme.Design.Light.NoActionBar" />
 </resources>
