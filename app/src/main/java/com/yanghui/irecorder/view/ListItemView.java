@@ -1,4 +1,4 @@
-package com.yanghui.irecorder;
+package com.yanghui.irecorder.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -98,7 +98,7 @@ public class ListItemView extends View {
         Paint.FontMetrics numMetrics = numPaint.getFontMetrics();
         float numFontSize = numMetrics.bottom - numMetrics.top;
         canvas.drawText(
-                "0",
+                Integer.toString(num),
                 realWidth / 16f,
                 realHeight / 2f + numFontSize / 4,
                 numPaint);
@@ -109,7 +109,7 @@ public class ListItemView extends View {
         canvas.drawText(
                 LayoutTool.CutString(
                         namePaint,
-                        "【风华引丨洛天依/乐正绫/言和/乐正龙牙】2020新年献曲",
+                        name,
                         realWidth * 0.85f),
                 realWidth * 0.15f,
                 realHeight * 0.35f + nameFontSize / 4f,
@@ -120,16 +120,45 @@ public class ListItemView extends View {
         Paint.FontMetrics appendMetrics = appendPaint.getFontMetrics();
         float appendFontSize = appendMetrics.bottom - appendMetrics.top;
         canvas.drawText(
-                "BV17J411h7zd",
+                bvID,
                 realWidth * 0.15f,
                 realHeight * 0.7f + nameFontSize / 4f,
                 appendPaint
         );
         canvas.drawText(
-                "3小时前",
+                time,
                 realWidth * 0.8f,
                 realHeight * 0.7f + nameFontSize / 4f,
                 appendPaint
         );
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        invalidate();
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+        invalidate();
+    }
+
+    public void setBvID(String bvID) {
+        this.bvID = bvID;
+        invalidate();
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+        invalidate();
+    }
+
+    public void setView(int num, String... params) {
+        if (params.length == 3) {
+            setName(params[0]);
+            setBvID(params[1]);
+            setTime(params[2]);
+            setNum(num);
+        }
     }
 }

@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="50dp"
                     android:layout_marginTop="5dp"
-                    android:text="2020-04-1216:12:43" />
+                    android:text="2020-04-12  16:12:43" />
             </LinearLayout>
 
             <TextView
@@ -81,8 +81,60 @@
                 android:textColor="@color/black"
                 android:textSize="24sp" />
 
-        </LinearLayout>
+            <View
+                android:layout_width="120dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/black" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.yanghui.irecorder.view.CircleImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="25dp"
+                    android:text="乐正绫"
+                    android:textColor="#666666"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/detailActivity_body_abstract"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="感谢陪伴,请听我为你写下的告白诗。\n--Staff--" />
+
+            <TextView
+                android:id="@+id/detailActivity_body_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/more"
+                android:textColor="@color/mainColor" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/data"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/black" />
+
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

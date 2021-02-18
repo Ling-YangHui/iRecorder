@@ -12,4 +12,6 @@
     <string name="mainActivity_body_del_button_text">结束任务</string>
     <string name="detailActivity_head_textView_text">详细信息</string>
     <string name="E_abstract">摘要</string>
+    <string name="more">更多...</string>
+    <string name="data">数据</string>
 </resources>
