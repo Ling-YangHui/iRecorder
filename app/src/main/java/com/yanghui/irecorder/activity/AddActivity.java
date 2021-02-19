@@ -43,14 +43,19 @@ public class AddActivity extends Activity {
             public void afterTextChanged(Editable s) {
                 record = phraseVideo(addActivity_body_input.getText().toString());
                 if (record != null) {
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
+                    Thread thread = new Thread(() -> {
+                        try {
                             record.refreshData();
-                            AddActivity.this.runOnUiThread(() -> addActivity_body_name.setText(record.name));
+                            if (record.name != null)
+                                AddActivity.this.runOnUiThread(() -> addActivity_body_name.setText(record.name));
+                            else
+                                AddActivity.this.runOnUiThread(() -> addActivity_body_name.setText(""));
+                        } catch (Exception ignored) {
                         }
                     });
                     thread.start();
+                } else {
+                    addActivity_body_name.setText("");
                 }
             }
         });
