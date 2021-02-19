@@ -27,17 +27,30 @@ public class Record {
     public final Queue<Integer> queueShare = new LinkedList<>();
     public final double[] velocity = new double[6]; // 用于存放六个属性的增速
     public final int[] current = new int[6]; // 用于存放六个属性的当前值
+    public boolean isValid = false;
+    public boolean isDetailedMode;
     public String name;
     public String append;
+    public String uploader;
     private ListItemView listItemView = null;
+    private OnRefreshListener listener = null;
 
     public Record(String bvid) {
         this.bvid = bvid;
     }
 
+
     public Record(String bvid, ListItemView listItemView) {
         this.bvid = bvid;
         this.listItemView = listItemView;
+    }
+
+    public void setOnRefreshListener(OnRefreshListener listener) {
+        this.listener = listener;
+    }
+
+    public void cancelListener() {
+        listener = null;
     }
 
     public void setListItemView(ListItemView listItemView) {
@@ -83,7 +96,7 @@ public class Record {
         listItemView.setView(this);
     }
 
-    public int refreshData() {
+    public void refreshData() {
         String url = "http://api.bilibili.com/x/web-interface/view?bvid=" + bvid;
         try {
             String info = readApi(url);
@@ -92,6 +105,8 @@ public class Record {
             if (code == 0) {
                 JSONObject stat = j.getJSONObject("data").getJSONObject("stat");
                 JSONObject data = j.getJSONObject("data");
+                JSONObject owner = j.getJSONObject("data").getJSONObject("owner");
+                uploader = owner.getString("name");
                 name = data.getString("title");
                 append = data.getString("desc");
                 current[0] = stat.getInt("view");
@@ -118,9 +133,12 @@ public class Record {
             calculateEachVelocity();
         } catch (IOException | JSONException e) {
             e.printStackTrace();
-            return -1;
+            isValid = false;
         }
-        return 1;
+        if (listener != null) {
+            listener.refresh(this);
+        }
+        isValid = true;
     }
 
     /**
@@ -161,5 +179,9 @@ public class Record {
 
     public int[] getCurrentValues() {
         return this.current;
+    }
+
+    public interface OnRefreshListener {
+        void refresh(Record record);
     }
 }

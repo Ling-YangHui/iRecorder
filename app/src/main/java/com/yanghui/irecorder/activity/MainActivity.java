@@ -1,9 +1,10 @@
 package com.yanghui.irecorder.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,11 +16,14 @@ import com.yanghui.irecorder.view.ListItemView;
 public class MainActivity extends AppCompatActivity {
 
     private LinearLayout mainActivity_body_list;
+    private Intent detailIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toast.makeText(this, "读取数据中...", Toast.LENGTH_SHORT).show();
+        detailIntent = new Intent(this, DetailActivity.class);
 
         mainActivity_body_list = findViewById(R.id.mainActivity_body_list);
         SetList();
@@ -40,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
             listItemView.setNum(i + 1);
             mainActivity_body_list.addView(listItemView, layoutParams);
             listItemView.setOnClickListener(v -> {
-                Log.i("2", "clicked");
+                DetailActivity.record = record;
+                startActivity(detailIntent);
             });
             record.refreshUI();
         }

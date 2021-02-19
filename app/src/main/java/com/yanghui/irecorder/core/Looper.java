@@ -16,8 +16,8 @@ public class Looper {
         public void run() {
             if (activity != null)
                 for (Record record : Record.records) {
-                    int i = record.refreshData();
-                    if (i == 1)
+                    record.refreshData();
+                    if (record.isValid)
                         activity.runOnUiThread(record::refreshUI);
                     else
                         activity.runOnUiThread(record::defaultUI);

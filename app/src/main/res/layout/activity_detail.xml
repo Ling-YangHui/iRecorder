@@ -7,6 +7,7 @@
     tools:context=".activity.DetailActivity">
 
     <RelativeLayout
+        android:id="@+id/detailActivity_head"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/mainColor">
@@ -21,7 +22,7 @@
             android:textSize="20sp"
             tools:ignore="RelativeOverlap" />
 
-        <Button
+        <View
             android:id="@+id/detailActivity_head_back_button"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -32,10 +33,12 @@
     </RelativeLayout>
 
     <ScrollView
+        android:id="@+id/detailActivity_body_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/detailActivity_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -44,14 +47,16 @@
 
             <TextView
                 android:id="@+id/detailActivity_body_name"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="【乐正绫原创曲】花"
                 android:textColor="@color/black"
-                android:textSize="28sp" />
+                android:textSize="20sp" />
 
             <LinearLayout
+                android:id="@+id/detailActivity_body_videoInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -61,7 +66,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:background="@color/mainColor"
-                    android:text="BV1Tk4y1R7X1"
                     android:textColor="@color/white" />
 
                 <TextView
@@ -69,8 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="50dp"
-                    android:layout_marginTop="5dp"
-                    android:text="2020-04-12  16:12:43" />
+                    android:layout_marginTop="5dp" />
             </LinearLayout>
 
             <TextView
@@ -88,6 +91,7 @@
                 android:background="@color/black" />
 
             <LinearLayout
+                android:id="@+id/detailActivity_body_upInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -103,7 +107,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="25dp"
-                    android:text="乐正绫"
                     android:textColor="#666666"
                     android:textSize="16sp" />
 
@@ -112,11 +115,11 @@
             <TextView
                 android:id="@+id/detailActivity_body_abstract"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="感谢陪伴,请听我为你写下的告白诗。\n--Staff--" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/detailActivity_body_more"
+                android:background="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/more"
@@ -140,6 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -204,5 +208,4 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-    [[[[[[
 </LinearLayout>
