@@ -17,8 +17,11 @@ import java.util.Vector;
 public class Record {
 
     public static Vector<Record> records = new Vector<>();
+    public static int BV = 0;
+    public static int AV = 1;
 
     public final String bvid;
+    private int type = 0;
     public final Queue<Integer> queueView = new LinkedList<>();
     public final Queue<Integer> queueFavo = new LinkedList<>();
     public final Queue<Integer> queueLike = new LinkedList<>();
@@ -35,13 +38,15 @@ public class Record {
     private ListItemView listItemView = null;
     private OnRefreshListener listener = null;
 
-    public Record(String bvid) {
+    public Record(String bvid, int type) {
         this.bvid = bvid;
+        this.type = type;
     }
 
 
-    public Record(String bvid, ListItemView listItemView) {
+    public Record(String bvid, int type, ListItemView listItemView) {
         this.bvid = bvid;
+        this.type = type;
         this.listItemView = listItemView;
     }
 
@@ -97,7 +102,11 @@ public class Record {
     }
 
     public void refreshData() {
-        String url = "http://api.bilibili.com/x/web-interface/view?bvid=" + bvid;
+        String url;
+        if (type == BV)
+            url = "http://api.bilibili.com/x/web-interface/view?bvid=" + bvid;
+        else
+            url = "http://api.bilibili.com/x/web-interface/view?aid=" + bvid;
         try {
             String info = readApi(url);
             JSONObject j = new JSONObject(info);

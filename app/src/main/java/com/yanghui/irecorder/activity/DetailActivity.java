@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yanghui.irecorder.R;
+import com.yanghui.irecorder.core.ActivityHandler;
 import com.yanghui.irecorder.core.Record;
 import com.yanghui.irecorder.view.CircleImageView;
 
@@ -27,8 +28,8 @@ public class DetailActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = View.inflate(this, R.layout.activity_detail, null);
-        setContentView(view);
+        setContentView(R.layout.activity_detail);
+        ActivityHandler.activityMap.put("detailActivity", this);
         detailActivity_head_back_button = findViewById(R.id.detailActivity_head_back_button);
         detailActivity_body_name = findViewById(R.id.detailActivity_body_name);
         detailActivity_body_bvid = findViewById(R.id.detailActivity_body_bvid);
@@ -76,10 +77,11 @@ public class DetailActivity extends Activity {
         if (record.isValid) {
             abstractGroup = record.append.split("\\n");
             detailActivity_body_name.setText(record.name);
-            detailActivity_body_bvid.setText(record.bvid);
+            detailActivity_body_bvid.setText(" " + record.bvid + " ");
             detailActivity_body_uploader.setText(record.uploader);
+            detailActivity_body_time.setText(Integer.toString(record.current[0]));
             if (abstractGroup.length >= 2) {
-                String string = abstractGroup[0] + "\\n" + abstractGroup[1];
+                String string = abstractGroup[0] + "\n" + abstractGroup[1];
                 detailActivity_body_abstract.setText(string);
             } else {
                 detailActivity_body_abstract.setText(record.append);

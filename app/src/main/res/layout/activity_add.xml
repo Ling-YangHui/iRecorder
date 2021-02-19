@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.AddActivity">
+
+    <RelativeLayout
+        android:id="@+id/addActivity_head"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/mainColor">
+
+        <TextView
+            android:id="@+id/addActivity_head_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/addTask"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            tools:ignore="RelativeOverlap" />
+
+        <View
+            android:id="@+id/addActivity_head_back_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20sp"
+            android:background="@mipmap/appendactivity_head_back" />
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/addActivity_body_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addActivity_head"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="20dp"
+        android:autofillHints="输入BV, AV或网址"
+        android:inputType="text"
+        android:textColor="@color/black"
+        tools:ignore="LabelFor" />
+
+    <TextView
+        android:id="@+id/addActivity_body_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addActivity_body_input"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/addActivity_body_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="80dp"
+        android:layout_marginBottom="30dp"
+        android:background="@color/mainColor"
+        android:text="@string/add"
+        android:textColor="@color/white" />
+</RelativeLayout>

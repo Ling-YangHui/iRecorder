@@ -17,4 +17,6 @@
     <string name="total">总量</string>
     <string name="totalSpeed">整体速率</string>
     <string name="timeSpeed">瞬时速率</string>
+    <string name="addTask">添加任务</string>
+    <string name="add">添加</string>
 </resources>
