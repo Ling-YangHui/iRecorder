@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".activity.DetailActivity">
 
     <RelativeLayout
@@ -95,6 +96,7 @@
                 android:id="@+id/detailActivity_body_upInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
                 android:orientation="horizontal">
 
                 <com.yanghui.irecorder.view.CircleImageView

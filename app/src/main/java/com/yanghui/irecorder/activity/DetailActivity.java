@@ -11,6 +11,8 @@ import com.yanghui.irecorder.core.ActivityHandler;
 import com.yanghui.irecorder.core.Record;
 import com.yanghui.irecorder.view.CircleImageView;
 
+import java.io.IOException;
+
 public class DetailActivity extends Activity {
 
     public static Record record = null;
@@ -77,9 +79,20 @@ public class DetailActivity extends Activity {
         if (record.isValid) {
             abstractGroup = record.append.split("\\n");
             detailActivity_body_name.setText(record.name);
-            detailActivity_body_bvid.setText(" " + record.bvid + " ");
+            detailActivity_body_bvid.setText("  " + record.bvid + "  ");
             detailActivity_body_uploader.setText(record.uploader);
             detailActivity_body_time.setText(Integer.toString(record.current[0]));
+            Thread thread = new Thread(() -> {
+                try {
+                    record.downloadImage();
+                    DetailActivity.this.runOnUiThread(() -> {
+                        detailActivity_body_image.setImage(record.face);
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            thread.start();
             if (abstractGroup.length >= 2) {
                 String string = abstractGroup[0] + "\n" + abstractGroup[1];
                 detailActivity_body_abstract.setText(string);

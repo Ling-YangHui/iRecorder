@@ -27,8 +27,8 @@ public class CircleImageView extends View {
     public CircleImageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        OUTER_WIDTH_SIZE = LayoutTool.dip2px(context, 60.0f);
-        OUTER_HEIGHT_SIZE = LayoutTool.dip2px(context, 60.0f);
+        OUTER_WIDTH_SIZE = LayoutTool.dip2px(context, 50.0f);
+        OUTER_HEIGHT_SIZE = LayoutTool.dip2px(context, 50.0f);
         setBackgroundColor(0x00000000);
         imagePaint = new Paint();
         imagePaint.setAntiAlias(true);
@@ -97,7 +97,7 @@ public class CircleImageView extends View {
     }
 
     public void setImage(Bitmap image) {
-        this.image = image;
+        this.image = LayoutTool.zoomBitmap(image, realWidth, realHeight);
         invalidate();
     }
 }

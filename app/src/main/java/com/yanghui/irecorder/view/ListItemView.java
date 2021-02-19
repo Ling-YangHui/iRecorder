@@ -15,6 +15,7 @@ public class ListItemView extends androidx.appcompat.widget.AppCompatButton {
 
     public String name = "";
     public String bvID = "";
+    public boolean isChosen = false;
     private final Context context;
     public String time = "";
     private int OUTER_WIDTH_SIZE;// 内部大小
@@ -151,16 +152,6 @@ public class ListItemView extends androidx.appcompat.widget.AppCompatButton {
         );
     }
 
-//    @SuppressLint("ClickableViewAccessibility")
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        if (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
-//            if (mCallback != null)
-//                mCallback.onClick(this);
-//        }
-//        return true;
-//    }
-
     public void setName(String name) {
         this.name = name;
         invalidate();
@@ -203,5 +194,16 @@ public class ListItemView extends androidx.appcompat.widget.AppCompatButton {
         name = "获取错误";
         bvID = "";
         time = "";
+    }
+
+    public void setChosen() {
+        if (isChosen) {
+            isChosen = false;
+            setBackgroundColor(0xFFFFFFFF);
+        } else {
+            isChosen = true;
+            setBackgroundColor(0xFFDDDDDD);
+        }
+        invalidate();
     }
 }

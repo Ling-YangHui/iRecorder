@@ -1,5 +1,8 @@
 package com.yanghui.irecorder.core;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.yanghui.irecorder.view.ListItemView;
 
 import org.json.JSONException;
@@ -21,7 +24,10 @@ public class Record {
     public static int AV = 1;
 
     public final String bvid;
-    private int type = 0;
+    private final int type;
+    public String uid;
+    public Bitmap face = null;
+    public String faceUrl;
     public final Queue<Integer> queueView = new LinkedList<>();
     public final Queue<Integer> queueFavo = new LinkedList<>();
     public final Queue<Integer> queueLike = new LinkedList<>();
@@ -115,7 +121,9 @@ public class Record {
                 JSONObject stat = j.getJSONObject("data").getJSONObject("stat");
                 JSONObject data = j.getJSONObject("data");
                 JSONObject owner = j.getJSONObject("data").getJSONObject("owner");
+                uid = owner.getString("mid");
                 uploader = owner.getString("name");
+                faceUrl = owner.getString("face");
                 name = data.getString("title");
                 append = data.getString("desc");
                 current[0] = stat.getInt("view");
@@ -192,5 +200,18 @@ public class Record {
 
     public interface OnRefreshListener {
         void refresh(Record record);
+    }
+
+    public void downloadImage() throws IOException {
+        if (!isValid)
+            return;
+        URL url = new URL(faceUrl);
+        InputStream inputStream = url.openStream();
+        byte[] image = readInputStream(inputStream);
+        if (image.length != 0) {
+            face = BitmapFactory.decodeByteArray(image, 0, image.length);
+        } else
+            face = null;
+        inputStream.close();
     }
 }

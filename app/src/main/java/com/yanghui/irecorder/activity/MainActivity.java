@@ -2,9 +2,12 @@ package com.yanghui.irecorder.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +21,11 @@ import com.yanghui.irecorder.view.ListItemView;
 public class MainActivity extends AppCompatActivity {
 
     private LinearLayout mainActivity_body_list;
+    private TextView mainActivity_body_multiChoose_back_button;
+    private TextView mainActivity_body_antiChoose_button;
+    private TextView mainActivity_body_del_button;
     private Button mainActivity_head_add;
+    private boolean isOnChooseMode = false;
     private Intent detailIntent;
     private Intent addIntent;
 
@@ -33,8 +40,34 @@ public class MainActivity extends AppCompatActivity {
 
         mainActivity_body_list = findViewById(R.id.mainActivity_body_list);
         mainActivity_head_add = findViewById(R.id.mainActivity_head_add);
-        mainActivity_head_add.setOnClickListener(v -> {
-            startActivity(addIntent);
+        mainActivity_body_multiChoose_back_button =
+                findViewById(R.id.mainActivity_body_multiChoose_back_button);
+        mainActivity_body_antiChoose_button =
+                findViewById(R.id.mainActivity_body_antiChoose_button);
+        mainActivity_body_del_button = findViewById(R.id.mainActivity_body_del_button);
+        mainActivity_head_add.setOnClickListener(v -> startActivity(addIntent));
+        mainActivity_body_del_button.setVisibility(View.INVISIBLE);
+        mainActivity_body_multiChoose_back_button.setOnClickListener(v -> {
+            changeOnChoseMode();
+            for (int i = 0; i < mainActivity_body_list.getChildCount(); i++) {
+                if (((ListItemView) mainActivity_body_list.getChildAt(i)).isChosen) {
+                    ((ListItemView) mainActivity_body_list.getChildAt(i)).setChosen();
+                }
+            }
+        });
+        mainActivity_body_antiChoose_button.setOnClickListener(v -> {
+            for (int i = 0; i < mainActivity_body_list.getChildCount(); i++) {
+                ((ListItemView) mainActivity_body_list.getChildAt(i)).setChosen();
+            }
+        });
+        mainActivity_body_del_button.setOnClickListener(v -> {
+            for (int i = mainActivity_body_list.getChildCount() - 1; i >= 0; i--) {
+                if (((ListItemView) mainActivity_body_list.getChildAt(i)).isChosen) {
+                    Record.records.remove(i);
+                }
+            }
+            SetList();
+            changeOnChoseMode();
         });
         Record.records.add(new Record("BV1pK4y1Q7V2", Record.BV));
         Record.records.add(new Record("BV18p4y1p7AV", Record.BV));
@@ -55,8 +88,18 @@ public class MainActivity extends AppCompatActivity {
             listItemView.setNum(i + 1);
             mainActivity_body_list.addView(listItemView, layoutParams);
             listItemView.setOnClickListener(v -> {
-                DetailActivity.record = record;
-                startActivity(detailIntent);
+                if (!isOnChooseMode) {
+                    DetailActivity.record = record;
+                    startActivity(detailIntent);
+                } else {
+                    listItemView.setChosen();
+                }
+            });
+            listItemView.setOnLongClickListener(v -> {
+                Log.i("1", "long");
+                if (!isOnChooseMode)
+                    changeOnChoseMode();
+                return false;
             });
             record.refreshUI();
         }
@@ -67,5 +110,17 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Record.records.removeAllElements();
         Looper.Stop();
+    }
+
+    private void changeOnChoseMode() {
+        if (isOnChooseMode) {
+            mainActivity_body_multiChoose_back_button.setText("多选");
+            mainActivity_body_del_button.setVisibility(View.INVISIBLE);
+            isOnChooseMode = false;
+        } else {
+            mainActivity_body_multiChoose_back_button.setText("返回");
+            mainActivity_body_del_button.setVisibility(View.VISIBLE);
+            isOnChooseMode = true;
+        }
     }
 }
