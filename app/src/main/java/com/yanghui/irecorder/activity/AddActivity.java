@@ -17,6 +17,7 @@ public class AddActivity extends Activity {
     private EditText addActivity_body_input;
     private Button addActivity_body_add;
     private TextView addActivity_body_name;
+    private Button addActivity_head_back_button;
     private Record record;
 
     @Override
@@ -28,6 +29,7 @@ public class AddActivity extends Activity {
         addActivity_body_input = findViewById(R.id.addActivity_body_input);
         addActivity_body_add = findViewById(R.id.addActivity_body_add);
         addActivity_body_name = findViewById(R.id.addActivity_body_name);
+        addActivity_head_back_button = findViewById(R.id.addActivity_head_back_button);
         addActivity_body_input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -66,6 +68,7 @@ public class AddActivity extends Activity {
                 finish();
             }
         });
+        addActivity_head_back_button.setOnClickListener(v -> finish());
     }
 
     private Record phraseVideo(String text) {

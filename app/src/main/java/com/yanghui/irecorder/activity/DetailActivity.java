@@ -3,6 +3,7 @@ package com.yanghui.irecorder.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,8 +25,12 @@ public class DetailActivity extends Activity {
     private TextView detailActivity_body_uploader;
     private TextView detailActivity_body_abstract;
     private TextView detailActivity_body_more;
+    private TextView[] total;
+    private TextView[] avgSpeed;
+    private TextView[] nowSpeed;
     private boolean isExpanded = false;
     private String[] abstractGroup;
+    private Handler retryHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,30 @@ public class DetailActivity extends Activity {
         detailActivity_body_uploader = findViewById(R.id.detailActivity_body_uploader);
         detailActivity_body_image = findViewById(R.id.detailActivity_body_image);
         detailActivity_body_more = findViewById(R.id.detailActivity_body_more);
+        total = new TextView[]{
+                findViewById(R.id.detailActivity_body_viewTotal),
+                findViewById(R.id.detailActivity_body_favoTotal),
+                findViewById(R.id.detailActivity_body_likeTotal),
+                findViewById(R.id.detailActivity_body_coinTotal),
+                findViewById(R.id.detailActivity_body_replyTotal),
+                findViewById(R.id.detailActivity_body_shareTotal)
+        };
+        avgSpeed = new TextView[]{
+                findViewById(R.id.detailActivity_body_viewAvg),
+                findViewById(R.id.detailActivity_body_favoAvg),
+                findViewById(R.id.detailActivity_body_likeAvg),
+                findViewById(R.id.detailActivity_body_coinAvg),
+                findViewById(R.id.detailActivity_body_replyAvg),
+                findViewById(R.id.detailActivity_body_shareAvg)
+        };
+        nowSpeed = new TextView[]{
+                findViewById(R.id.detailActivity_body_viewNow),
+                findViewById(R.id.detailActivity_body_favoNow),
+                findViewById(R.id.detailActivity_body_likeNow),
+                findViewById(R.id.detailActivity_body_coinNow),
+                findViewById(R.id.detailActivity_body_replyNow),
+                findViewById(R.id.detailActivity_body_shareNow)
+        };
 
         detailActivity_body_more.setOnClickListener(v -> {
             if (!isExpanded) {
@@ -60,6 +89,11 @@ public class DetailActivity extends Activity {
         detailActivity_head_back_button.setOnClickListener(v -> {
             finish();
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         setView();
     }
 
@@ -73,6 +107,7 @@ public class DetailActivity extends Activity {
             if (r.isValid) {
                 this.runOnUiThread(() -> {
                     detailActivity_body_time.setText(Integer.toString(r.current[0]));
+                    refreshData();
                 });
             }
         });
@@ -83,14 +118,14 @@ public class DetailActivity extends Activity {
             detailActivity_body_uploader.setText(record.uploader);
             detailActivity_body_time.setText(Integer.toString(record.current[0]));
             Thread thread = new Thread(() -> {
-                try {
-                    record.downloadImage();
-                    DetailActivity.this.runOnUiThread(() -> {
-                        detailActivity_body_image.setImage(record.face);
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (record.face == null) {
+                    try {
+                        record.downloadImage();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+                this.runOnUiThread(() -> detailActivity_body_image.setImage(record.face, this));
             });
             thread.start();
             if (abstractGroup.length >= 2) {
@@ -99,13 +134,30 @@ public class DetailActivity extends Activity {
             } else {
                 detailActivity_body_abstract.setText(record.append);
             }
+
+            refreshData();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DetailActivity.record.cancelListener();
+        if (DetailActivity.record != null)
+            DetailActivity.record.cancelListener();
         DetailActivity.record = null;
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void refreshData() {
+        try {
+            for (int i = 0; i < 6; i++) {
+                total[i].setText(String.format("%d", record.current[i]));
+                nowSpeed[i].setText(String.format("%.2f/min", record.velocity[i]));
+                double time = System.currentTimeMillis() - record.pubDate;
+                avgSpeed[i].setText(String.format("%.2f/d", record.current[i] / (time / 1000 / 3600 / 24)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

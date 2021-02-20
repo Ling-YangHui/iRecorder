@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ActivityHandler.activityMap.put("mainActivity", this);
         Toast.makeText(this, "读取数据中...", Toast.LENGTH_SHORT).show();
         detailIntent = new Intent(this, DetailActivity.class);

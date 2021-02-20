@@ -19,4 +19,10 @@
     <string name="timeSpeed">瞬时速率</string>
     <string name="addTask">添加任务</string>
     <string name="add">添加</string>
+    <string name="view">播放</string>
+    <string name="favo">收藏</string>
+    <string name="like">点赞</string>
+    <string name="coin">投币</string>
+    <string name="commentary">评论</string>
+    <string name="share">转发</string>
 </resources>

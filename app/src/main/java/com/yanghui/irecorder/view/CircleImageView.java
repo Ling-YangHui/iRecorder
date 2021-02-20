@@ -1,12 +1,14 @@
 package com.yanghui.irecorder.view;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -96,7 +98,12 @@ public class CircleImageView extends View {
         );
     }
 
-    public void setImage(Bitmap image) {
+    public void setImage(Bitmap image, Activity activity) {
+        if (realWidth == 0 || realHeight == 0) {
+            new Handler().postDelayed(() -> activity.runOnUiThread(() -> this.setImage(image,
+                    activity)), 1000);
+            return;
+        }
         this.image = LayoutTool.zoomBitmap(image, realWidth, realHeight);
         invalidate();
     }

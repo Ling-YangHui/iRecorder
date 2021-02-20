@@ -22,7 +22,7 @@
             android:textSize="20sp"
             tools:ignore="RelativeOverlap" />
 
-        <View
+        <Button
             android:id="@+id/addActivity_head_back_button"
             android:layout_width="30dp"
             android:layout_height="30dp"
