@@ -152,9 +152,11 @@ public class DetailActivity extends Activity {
         try {
             for (int i = 0; i < 6; i++) {
                 total[i].setText(String.format("%d", record.current[i]));
-                nowSpeed[i].setText(String.format("%.2f/min", record.velocity[i]));
-                double time = System.currentTimeMillis() - record.pubDate;
-                avgSpeed[i].setText(String.format("%.2f/d", record.current[i] / (time / 1000 / 3600 / 24)));
+                nowSpeed[i].setText(String.format("%.2f/h", record.velocity[i] * 60));
+
+                double time = System.currentTimeMillis() - record.pubDate * 1000;
+                avgSpeed[i].setText(String.format("%.2f/h",
+                        record.current[i] / (time / 1000 / 3600)));
             }
         } catch (Exception e) {
             e.printStackTrace();

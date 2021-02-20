@@ -28,7 +28,7 @@ public class Record {
     public String uid;
     public Bitmap face = null;
     public String faceUrl;
-    public int pubDate;
+    public long pubDate;
     public final Queue<Integer> queueView = new LinkedList<>();
     public final Queue<Integer> queueFavo = new LinkedList<>();
     public final Queue<Integer> queueLike = new LinkedList<>();
@@ -127,7 +127,7 @@ public class Record {
                 faceUrl = owner.getString("face");
                 name = data.getString("title");
                 append = data.getString("desc");
-                pubDate = data.getInt("pubdate");
+                pubDate = data.getLong("pubdate");
                 current[0] = stat.getInt("view");
                 current[1] = stat.getInt("favorite");
                 current[2] = stat.getInt("like");
