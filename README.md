@@ -16,4 +16,13 @@ More information please download the release version and explore it.
 
 ## 📐Version
 
-v0.1.0-RC
+v2.0.0-alpha
+
+## UpdateLog
+
+* v2.0.0-alpha: 
+1. support the change of units of current & average speed.
+2. support to save and load the record list.
+
+* v1.0.0-RC:
+Basic functions are completed.

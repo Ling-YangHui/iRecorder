@@ -25,4 +25,10 @@
     <string name="coin">投币</string>
     <string name="commentary">评论</string>
     <string name="share">转发</string>
+    <string name="configActivity_head_textView_text">设置</string>
+    <string name="hour">h</string>
+    <string name="minute">min</string>
+    <string name="day">d</string>
+    <string name="average_speed_unit">整体速率单位</string>
+    <string name="current_speed_unit">瞬时速率单位</string>
 </resources>

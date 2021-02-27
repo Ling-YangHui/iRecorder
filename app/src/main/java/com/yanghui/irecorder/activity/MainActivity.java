@@ -1,6 +1,7 @@
 package com.yanghui.irecorder.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.yanghui.irecorder.R;
 import com.yanghui.irecorder.core.ActivityHandler;
+import com.yanghui.irecorder.core.JsonController;
 import com.yanghui.irecorder.core.Looper;
 import com.yanghui.irecorder.core.Record;
 import com.yanghui.irecorder.view.ListItemView;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActivityHandler.configMapInit();
 
         ActivityHandler.activityMap.put("mainActivity", this);
         Toast.makeText(this, "读取数据中...", Toast.LENGTH_SHORT).show();
@@ -57,9 +60,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mainActivity_body_antiChoose_button.setOnClickListener(v -> {
-            for (int i = 0; i < mainActivity_body_list.getChildCount(); i++) {
-                ((ListItemView) mainActivity_body_list.getChildAt(i)).setChosen();
-            }
+            if (isOnChooseMode)
+                for (int i = 0; i < mainActivity_body_list.getChildCount(); i++) {
+                    ((ListItemView) mainActivity_body_list.getChildAt(i)).setChosen();
+                }
         });
         mainActivity_body_del_button.setOnClickListener(v -> {
             for (int i = mainActivity_body_list.getChildCount() - 1; i >= 0; i--) {
@@ -70,9 +74,7 @@ public class MainActivity extends AppCompatActivity {
             SetList();
             changeOnChoseMode();
         });
-        Record.records.add(new Record("BV1pK4y1Q7V2", Record.BV));
-        Record.records.add(new Record("BV18p4y1p7AV", Record.BV));
-        Record.records.add(new Record("BV1nJ411q7ZR", Record.BV));
+        JsonController.loadData(this);
         SetList();
         Looper.setActivity(this);
         Looper.Start();
@@ -109,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        JsonController.saveData(this);
         Record.records.removeAllElements();
         Looper.Stop();
     }
@@ -117,10 +120,12 @@ public class MainActivity extends AppCompatActivity {
         if (isOnChooseMode) {
             mainActivity_body_multiChoose_back_button.setText("多选");
             mainActivity_body_del_button.setVisibility(View.INVISIBLE);
+            mainActivity_body_antiChoose_button.setTextColor(Color.GRAY);
             isOnChooseMode = false;
         } else {
             mainActivity_body_multiChoose_back_button.setText("返回");
             mainActivity_body_del_button.setVisibility(View.VISIBLE);
+            mainActivity_body_antiChoose_button.setTextColor(0xFF0179D6);
             isOnChooseMode = true;
         }
     }

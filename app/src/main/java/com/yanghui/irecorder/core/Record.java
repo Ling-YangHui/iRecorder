@@ -24,11 +24,6 @@ public class Record {
     public static int AV = 1;
 
     public final String bvid;
-    private final int type;
-    public String uid;
-    public Bitmap face = null;
-    public String faceUrl;
-    public long pubDate;
     public final Queue<Integer> queueView = new LinkedList<>();
     public final Queue<Integer> queueFavo = new LinkedList<>();
     public final Queue<Integer> queueLike = new LinkedList<>();
@@ -37,6 +32,11 @@ public class Record {
     public final Queue<Integer> queueShare = new LinkedList<>();
     public final double[] velocity = new double[6]; // 用于存放六个属性的增速
     public final int[] current = new int[6]; // 用于存放六个属性的当前值
+    private final int type;
+    public String uid;
+    public Bitmap face = null;
+    public String faceUrl;
+    public long pubDate;
     public boolean isValid = false;
     public boolean isDetailedMode;
     public String name;
@@ -153,6 +153,7 @@ public class Record {
         } catch (IOException | JSONException e) {
             e.printStackTrace();
             isValid = false;
+            return;
         }
         if (listener != null) {
             listener.refresh(this);
@@ -200,10 +201,6 @@ public class Record {
         return this.current;
     }
 
-    public interface OnRefreshListener {
-        void refresh(Record record);
-    }
-
     public void downloadImage() throws IOException {
         if (!isValid)
             return;
@@ -215,5 +212,9 @@ public class Record {
         } else
             face = null;
         inputStream.close();
+    }
+
+    public interface OnRefreshListener {
+        void refresh(Record record);
     }
 }

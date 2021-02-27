@@ -2,6 +2,7 @@ package com.yanghui.irecorder.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -18,6 +19,7 @@ public class DetailActivity extends Activity {
 
     public static Record record = null;
     private View detailActivity_head_back_button;
+    private View detailActivity_head_config_button;
     private TextView detailActivity_body_name;
     private TextView detailActivity_body_bvid;
     private TextView detailActivity_body_time;
@@ -26,17 +28,19 @@ public class DetailActivity extends Activity {
     private TextView detailActivity_body_abstract;
     private TextView detailActivity_body_more;
     private TextView[] total;
-    private TextView[] avgSpeed;
-    private TextView[] nowSpeed;
+    private TextView[] averageSpeed;
+    private TextView[] currentSpeed;
     private boolean isExpanded = false;
     private String[] abstractGroup;
     private Handler retryHandler;
+    private Intent configIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ActivityHandler.activityMap.put("detailActivity", this);
+        configIntent = new Intent(this, ConfigActivity.class);
         detailActivity_head_back_button = findViewById(R.id.detailActivity_head_back_button);
         detailActivity_body_name = findViewById(R.id.detailActivity_body_name);
         detailActivity_body_bvid = findViewById(R.id.detailActivity_body_bvid);
@@ -45,6 +49,7 @@ public class DetailActivity extends Activity {
         detailActivity_body_uploader = findViewById(R.id.detailActivity_body_uploader);
         detailActivity_body_image = findViewById(R.id.detailActivity_body_image);
         detailActivity_body_more = findViewById(R.id.detailActivity_body_more);
+        detailActivity_head_config_button = findViewById(R.id.detailActivity_head_config_button);
         total = new TextView[]{
                 findViewById(R.id.detailActivity_body_viewTotal),
                 findViewById(R.id.detailActivity_body_favoTotal),
@@ -53,7 +58,7 @@ public class DetailActivity extends Activity {
                 findViewById(R.id.detailActivity_body_replyTotal),
                 findViewById(R.id.detailActivity_body_shareTotal)
         };
-        avgSpeed = new TextView[]{
+        averageSpeed = new TextView[]{
                 findViewById(R.id.detailActivity_body_viewAvg),
                 findViewById(R.id.detailActivity_body_favoAvg),
                 findViewById(R.id.detailActivity_body_likeAvg),
@@ -61,7 +66,7 @@ public class DetailActivity extends Activity {
                 findViewById(R.id.detailActivity_body_replyAvg),
                 findViewById(R.id.detailActivity_body_shareAvg)
         };
-        nowSpeed = new TextView[]{
+        currentSpeed = new TextView[]{
                 findViewById(R.id.detailActivity_body_viewNow),
                 findViewById(R.id.detailActivity_body_favoNow),
                 findViewById(R.id.detailActivity_body_likeNow),
@@ -89,6 +94,9 @@ public class DetailActivity extends Activity {
         detailActivity_head_back_button.setOnClickListener(v -> {
             finish();
         });
+        detailActivity_head_config_button.setOnClickListener(v -> {
+            startActivity(configIntent);
+        });
     }
 
     @Override
@@ -100,7 +108,8 @@ public class DetailActivity extends Activity {
     @SuppressLint("SetTextI18n")
     public void setView() {
         Record record = DetailActivity.record;
-        if (record == null) {
+        if (record == null || !record.isValid) {
+            detailActivity_body_name.setText("无信息");
             return;
         }
         record.setOnRefreshListener(r -> {
@@ -134,7 +143,6 @@ public class DetailActivity extends Activity {
             } else {
                 detailActivity_body_abstract.setText(record.append);
             }
-
             refreshData();
         }
     }
@@ -148,15 +156,38 @@ public class DetailActivity extends Activity {
     }
 
     @SuppressLint("DefaultLocale")
-    private void refreshData() {
+    public void refreshData() {
         try {
             for (int i = 0; i < 6; i++) {
                 total[i].setText(String.format("%d", record.current[i]));
-                nowSpeed[i].setText(String.format("%.2f/h", record.velocity[i] * 60));
-
+                // 计算瞬时速度，按照config中的数值进行运算
+                String currentSpeedText, averageSpeedText;
+                switch (ActivityHandler.configMap.get("currentSpeedUnit")) {
+                    case "h":
+                        currentSpeedText = String.format("%.2f/h", record.velocity[i] * 60);
+                        break;
+                    case "d":
+                        currentSpeedText = String.format("%.2f/d", record.velocity[i] * 60 * 24);
+                        break;
+                    default:
+                        currentSpeedText = String.format("%.2f/min", record.velocity[i]);
+                }
+                currentSpeed[i].setText(currentSpeedText);
                 double time = System.currentTimeMillis() - record.pubDate * 1000;
-                avgSpeed[i].setText(String.format("%.2f/h",
-                        record.current[i] / (time / 1000 / 3600)));
+                switch (ActivityHandler.configMap.get("averageSpeedUnit")) {
+                    case "h":
+                        averageSpeedText = String.format("%.2f/h",
+                                record.current[i] / (time / 1000 / 3600));
+                        break;
+                    case "d":
+                        averageSpeedText = String.format("%.2f/d",
+                                record.current[i] / (time / 1000 / 3600 / 24));
+                        break;
+                    default:
+                        averageSpeedText = String.format("%.2f/min",
+                                record.current[i] / (time / 1000 / 60));
+                }
+                averageSpeed[i].setText(averageSpeedText);
             }
         } catch (Exception e) {
             e.printStackTrace();
