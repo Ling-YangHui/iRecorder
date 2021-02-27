@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YangHui.BrandBoard">
-        <activity android:name=".activity.ConfigActivity"></activity>
+        <activity android:name=".activity.ConfigActivity" />
         <activity android:name=".activity.AddActivity" />
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.MainActivity" />

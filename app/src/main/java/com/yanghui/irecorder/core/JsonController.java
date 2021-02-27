@@ -20,6 +20,10 @@ public class JsonController {
             fileOutputStream = context.openFileOutput("watchList.json", Context.MODE_PRIVATE);
             // 开始拼接json字符串
             StringBuilder saveStr = new StringBuilder("[");
+            saveStr.append("\"").append(ActivityHandler.configMap.get("currentSpeedUnit")).append(
+                    "\",");
+            saveStr.append("\"").append(ActivityHandler.configMap.get("averageSpeedUnit")).append(
+                    "\",");
             for (int i = 0; i < Record.records.size(); i++) {
                 saveStr.append("\"").append(Record.records.get(i).bvid).append("\"");
                 if (i != Record.records.size() - 1)
@@ -54,7 +58,9 @@ public class JsonController {
                 readStr.append(temp);
             }
             JSONArray array = new JSONArray(readStr.toString());
-            for (int i = 0; i < array.length(); i++) {
+            ActivityHandler.configMap.put("currentSpeedUnit", array.getString(0));
+            ActivityHandler.configMap.put("averageSpeedUnit", array.getString(1));
+            for (int i = 2; i < array.length(); i++) {
                 String id = array.getString(i);
                 if (id.toLowerCase().startsWith("bv")) {
                     Record.records.add(new Record(id, Record.BV));
